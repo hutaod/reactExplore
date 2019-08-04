@@ -561,6 +561,30 @@ function applyMiddleware(...middlewares) {
 }
 
 ```
+编写一个最简单的符合规范的中间件：
+```javascript
+function logger({ dispatch, getState }) {
+  // middlewareAPI  中包含了dispatch, getState这两个方法
+  // 但是调用middlewareAPI的dispatch函数会抛出异常，可以查看上面源码
+  // 返回真正的中间件执行函数 下面的next就是增强的dispatch
+  return next => {
+    return action => {
+      console.log('logger')
+      // 执行改中间件任务
+      console.log(action.type + '执行了！！！')
+      // 执行下一个中间件
+      next(action)
+    }
+  }
+}
+// 实现异步的中间件 - thunk redux-thunk也是这样实现的，不过加了层函数包裹，实现传递参额外参数
+const thunk = ({dispatch, getState}) => next => action => {
+    if (typeof action == 'function') {
+        return action(dispatch, getState)
+    }
+    return next(action)
+}
+```
 
 ## 绑定actionCreator - `bindActionCreators`
 作用： 实际上就是通过返回一个高阶函数，通过闭包应用，将dispatch隐藏起来，正常发起一个dispatch(action)，但是bindActionCreators将dispatch隐藏，当执行bindActionCreators时：
