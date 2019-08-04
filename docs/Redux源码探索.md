@@ -1,5 +1,5 @@
 # Redux 源码探索
-redux
+阅读redux源码，可以让我们在实践中更好使用它，也可以学习它来初步认JS识函数式编程
 
 ## 文件结构
 ```
@@ -640,6 +640,12 @@ function compose(...funcs) {
 ```
 
 ## 参考链接
+[redux github仓库](https://github.com/reduxjs/redux)
+
 [通过Github Blame深入分析Redux源码](https://github.com/fi3ework/blog/issues/7)
-[通过Github Blame深入分析Redux源码](https://juejin.im/post/5d308b2c6fb9a07ec63b4cad#heading-10)
-[通过Github Blame深入分析Redux源码](https://juejin.im/post/5b9617835188255c781c9e2f)
+
+[一次性彻底吸收 Redux 源码](https://juejin.im/post/5d308b2c6fb9a07ec63b4cad#heading-0)
+
+[更好用的 Redux](https://juejin.im/post/5bc318b25188255c5f5414e7)
+
+[JS函数式编程指南](https://llh911001.gitbooks.io/mostly-adequate-guide-chinese/content/)
