@@ -1460,3 +1460,6 @@ function useState(initial) {
 感谢你的阅读！
 
 再次附上原文链接：[Build your own React](https://pomb.us/build-your-own-react/)
+附上自己测试的代码仓库：[测试代码](https://github.com/ht1131589588/reactExplore)
+
+翻译有问题的地方欢迎指出，感谢！

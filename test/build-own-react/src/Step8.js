@@ -1,6 +1,3 @@
-import React from 'react'
-// import ReactDOM from 'react-dom'
-
 function createElement (type, props, ...children) {
   return {
     type,
@@ -194,11 +191,13 @@ function useState(initial) {
     queue: [],
   }
 
+  // 获取最新的state
   const actions = oldHook ? oldHook.queue : [];
   actions.forEach(action => {
     hook.state = action(hook.state)
   })
 
+  // 更新state的方法
   const setState = action => {
     hook.queue.push(action)
     wipRoot = {
