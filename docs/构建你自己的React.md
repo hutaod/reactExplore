@@ -4,7 +4,7 @@
 
 我们要从头开始一步一步重写一个 React，遵循真实的 React 代码结构，但不会有所有的优化以及非必要的功能。
 
-如果你已经阅读过我以前写的 `构建你自己的 React` 文章，与之相比，不同之处仅仅是这篇文章基于 React16.8，因此我们可以使用 hooks，并删除所有与 class 相关的代码。
+如果你已经阅读过作者以前写的 `构建你自己的 React` 文章，与之相比，不同之处仅仅是这篇文章基于 React16.8，因此我们可以使用 hooks，并删除所有与 class 相关的代码。
 
 你可以在 [Didact repo](https://github.com/pomber/didact) 上面找到旧博客文章和代码的历史记录，也有一个[相关内容的谈话](https://www.youtube.com/watch?v=8Kc2REHdwnQ&feature=youtu.be)，但这是一个独立的文章。
 
