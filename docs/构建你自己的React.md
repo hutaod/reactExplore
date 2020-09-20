@@ -1,6 +1,6 @@
 # 构建你自己的 React
 
-    本文为翻译文章，原文：[Build your own React](https://pomb.us/build-your-own-react/)
+    本文为翻译文章，中间添加了少部分自己的理解，建议和原文一起对照看，原文链接：https://pomb.us/build-your-own-react
 
 我们要从头开始一步一步重写一个 React，遵循真实的 React 代码结构，但不会有所有的优化以及非必要的功能。
 
@@ -1460,6 +1460,6 @@ function useState(initial) {
 感谢你的阅读！
 
 再次附上原文链接：[Build your own React](https://pomb.us/build-your-own-react/)
-附上自己测试的代码仓库：[测试代码](https://github.com/ht1131589588/reactExplore)
+附上自己测试的代码仓库：[测试代码](https://github.com/ht1131589588/reactExplore/tree/master/test/build-own-react/src)
 
 翻译有问题的地方欢迎指出，感谢！
