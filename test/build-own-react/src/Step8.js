@@ -122,6 +122,9 @@ function render (element, container) {
   }
   deletions = []
   nextUnitOfWork = wipRoot
+
+  // 开始时间循环，监听刷新任务
+  requestIdleCallback(workLoop)
 }
 
 let nextUnitOfWork = null
@@ -144,8 +147,6 @@ function workLoop(deadline) {
 
   requestIdleCallback(workLoop)
 }
-
-requestIdleCallback(workLoop)
 
 function performUnitOfWork(fiber) {
   const isFunctionComponent = fiber.type instanceof Function
