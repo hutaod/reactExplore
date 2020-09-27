@@ -13,6 +13,9 @@
       const e = React.createElement
       const domContainer = document.querySelector('#root')
 
+      domContainer.addEventListener('click', () => {
+        console.log(123)
+      })
       class LikeButton extends React.Component {
         state = {
           count: 1,
@@ -39,7 +42,12 @@
             null,
             e(
               'button',
-              { onClick: () => this.setState({ count: this.state.count + 1 }) },
+              {
+                onClick: (e) => {
+                  e.stopPropagation()
+                  this.setState({ count: this.state.count + 1 })
+                },
+              },
               'count'
             ),
             e('div', null, this.state.count)
