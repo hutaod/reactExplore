@@ -42,7 +42,7 @@ export function createText(vnode) {
   return { type: 'text', props: { nodeValue: vnode } }
 }
 
-export const Fragment = (props) => {
+export const Fragment = props => {
   return props.children
 }
 export const isArr = Array.isArray

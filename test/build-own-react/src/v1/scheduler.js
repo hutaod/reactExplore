@@ -76,14 +76,21 @@ function flush(initTime) {
     }
 
     // 获取任务的callback
-    const callback = currentTask.callback;
+    const reconcileWork = currentTask.callback;
     // 清楚当前任务的callback
     currentTask.callback = null;
-    // 如果callback是函数，则直接执行，并返回下一个需要执行的callback
-    const next = typeof callback === "function" && callback(timeout)
-    // 如果next存在则给赋值给currentTask.callback
-    // 不存在则直接在macroTask中移除当前的任务
-    next ? (currentTask.callback = next) : macroTask.shift()
+    if(reconcileWork?.(timeout)) {
+      currentTask.callback = reconcileWork
+    } else {
+      macroTask.shift()
+    }
+
+
+    // // 如果callback是函数，则直接执行，并返回下一个需要执行的callback
+    // const next = typeof callback === "function" && callback(timeout)
+    // // 如果next存在则给赋值给currentTask.callback
+    // // 不存在则直接在macroTask中移除当前的任务
+    // next ? (currentTask.callback = next) : macroTask.shift()
 
     // 刷新最新的任务
     currentTask = peek(macroTask)

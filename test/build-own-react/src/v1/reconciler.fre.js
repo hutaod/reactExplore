@@ -1,6 +1,6 @@
-import { scheduleWork, shouldYield, schedule } from './scheduler'
-import { resetCursor } from './hooks'
 import { createElement, updateElement } from './dom'
+import { resetCursor } from './hooks'
+import { scheduleWork, shouldYield, schedule } from './scheduler'
 import { isArr, createText } from './h'
 
 let preCommit
@@ -15,12 +15,12 @@ export const render = (element, container, done) => {
   const rootFiber = {
     node: container,
     props: {
-      children: element,
-      onError
+      children: element
     },
     done
   }
-  dispatchUpdate()
+  window.addEventListener('error', onError)
+  dispatchUpdate(rootFiber)
 }
 
 export const dispatchUpdate = (fiber) => {
@@ -33,6 +33,7 @@ export const dispatchUpdate = (fiber) => {
 }
 
 const reconcileWork = timeout => {
+  console.log(0, microTask)
   if(!WIP) {
     // 取出微任务
     WIP = microTask.shift()
@@ -41,13 +42,14 @@ const reconcileWork = timeout => {
     WIP = reconcile(WIP)
   }
   if(WIP && !timeout) {
-    return reconcileWork
+    return true
   }
+  console.log(preCommit)
   if (preCommit) {
     // 进入commit阶段
     commitWork(preCommit)
   }
-  return null
+  return false
 }
 
 const reconcile = WIP => {
@@ -80,7 +82,7 @@ const updateHook = WIP => {
 const updateHost = WIP => {
   if (!WIP.node) {
     if (WIP.type === 'svg') {
-      WIP.tag = Flag.SVG
+      WIP.op |= (1 << 4)
     }
     WIP.node = createElement(WIP)
   }
@@ -111,7 +113,7 @@ const reconcileChildren = (WIP, children) => {
     if (newFiber && newFiber.type === oldFiber.type) {
       reused[k] = oldFiber
     } else {
-      oldFiber.op = Flag.DELETE
+      oldFiber.op |= (1 << 3)
       commits.push(oldFiber)
     }
   }
@@ -123,12 +125,14 @@ const reconcileChildren = (WIP, children) => {
     const oldFiber = reused[k]
 
     if (oldFiber) {
-      oldFiber.op = Flag.UPDATE
+      oldFiber.op |= (1 << 2)
       newFiber = { ...oldFiber, ...newFiber }
       newFiber.lastProps = oldFiber.props
-      if (shouldPlace(newFiber)) newFiber.op = Flag.PLACE
+      if (shouldPlace(newFiber)) {
+        newFiber.op &= (1 << 1)
+      }
     } else {
-      newFiber.op = Flag.PLACE
+      newFiber.op |= (1 << 1)
     }
 
     newFibers[k] = newFiber
@@ -137,8 +141,8 @@ const reconcileChildren = (WIP, children) => {
     if (prevFiber) {
       prevFiber.sibling = newFiber
     } else {
-      if (WIP.tag === Flag.SVG) {
-        newFiber.tag = Flag.SVG
+      if (WIP.op & (1 << 4)) {
+        newFiber.op |= (1 << 4)
       }
       WIP.child = newFiber
     }
@@ -166,7 +170,7 @@ const commitWork = fiber => {
 
 const commit = fiber => {
   const { op, parentNode, node, ref, hooks } = fiber
-  if (op === Flag.DELETE) {
+  if (op & (1 << 3)) {
     if(hooks) {
       hooks.list.forEach(cleanup)
     }
@@ -178,7 +182,7 @@ const commit = fiber => {
       side(hooks.layout)
       schedule(() => side(hooks.effect))
     }
-  } else if (op === Flag.UPDATE) {
+  } else if (op & (1 << 2)) {
     updateElement(node, fiber.lastProps, fiber.props)
   } else {
     const point = fiber.insertPoint ? fiber.insertPoint.node : null
@@ -190,14 +194,16 @@ const commit = fiber => {
   refer(ref, node)
 }
 
-const onError = e => {
+const onError = (e) => {
   if (isFn(e.error?.then)) {
     e.preventDefault()
-    currentFiber.lane = false
-    currentFiber.hooks.list.forEach(h => (h[3] ? (h[2] = 1) : h.length > 3 ? (h[2] = 2) : null))
+    currentFiber.lane = 0
+    currentFiber.hooks.list.forEach(reset)
     dispatchUpdate(currentFiber)
   }
 }
+
+const reset = h => (h[2] & (1 << 2) ? h[2] = 0b1101 : h[2] & (1 << 3) ? h[2] = 0b1010 : null)
 
 const hashfy = c => {
   const out = {}
@@ -236,12 +242,4 @@ export const some = v => v != null && v !== false && v !== true
 
 const hs = (i, j, k) =>
   k != null && j != null ? '.' + i + '.' + k : j != null ? '.' + i + '.' + j : k != null ? '.' + k : '.' + i
-
-export const Flag = {
-  NOWORK: 0,
-  PLACE: 1,
-  UPDATE: 2,
-  DELETE: 3,
-  SVG: 4,
-}
 
