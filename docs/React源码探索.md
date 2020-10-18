@@ -1,4 +1,4 @@
-# React源码探索
+# React源码
 
 层次：
 - 掌握术语、基本实现思路：实现一个简版 `react`，了解实现过程，理解原理 https://pomb.us/build-your-own-react/ 
