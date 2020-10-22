@@ -147,6 +147,44 @@ export function createElement(type, config, children) {
 }
 ```
 
+createElement 入参有 3 个，这 3 个参数包含了 React 创建一个元素所需要知道的全部信息。
+
+- type: 标识节点类型。它可以是类似“h1”“div”这样的标准 HTML 标签字符串，也可以是React组件类型或者React Fragment类型。
+- config: 以对象形式传入，组件所有的属性都会以键值对的形式存储在 config 对象中。
+- children: 从第三个入参开始往后，传入的参数都是 children，格式可能是“任意JS类型”，它记录的是组件标签之间嵌套的内容，也就是所谓的“子节点”。
+
+从 createElement 源码中可以提取出一个流程图：
+
+![](image/react_c_e.png)
+
+从图中其实可以看出：createElement 就像是开发者和 ReactElement 调用之间的一个“转换器”、一个数据处理层。它可以从开发者处接受相对简单的参数，然后将这些参数按照 ReactElement 的预期做一层格式化，最终通过调用 ReactElement 来实现元素的创建。
+
+下面我们来看 ReactElement 源码：
+
+```jsx
+const ReactElement = function(type, key, ref, self, source, owner, props) {
+  const element = {
+    // REACT_ELEMENT_TYPE是一个常量，用来标识该对象是一个ReactElement
+    $$typeof: REACT_ELEMENT_TYPE,
+    // 内置属性赋值
+    type: type,
+    key: key,
+    ref: ref,
+    props: props,
+    // 记录创造该元素的组件
+    _owner: owner,
+  };
+  if (__DEV__) {
+    // 这里是一些针对 __DEV__ 环境下的处理，对于大家理解主要逻辑意义不大，此处我直接省略掉，以免混淆视听
+  }
+  return element;
+};
+```
+
+从逻辑上我们可以看出，ReactElement 其实只做了一件事情，那就是“创建”，说得更精确一点，是“组装”：ReactElement 把传入的参数按照一定的规范，“组装”进了 element 对象里，并把它返回给了 React.createElement，最终 React.createElement 又把它交回到了开发者手中。整个过程如下图所示：
+
+
+
 ## Fiber树
 
 ## Reconciler
