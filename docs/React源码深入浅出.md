@@ -9,9 +9,19 @@
 - Class Component
 - Hooks (Function Component)
 
+但如果直接从上面的这些概念来进行切入React原理，是相对比较枯燥的。整理一下，我们按照这个顺序来进行讲解：
+
+- JSX 和 虚拟DOM
+- 生命周期
+- Fiber 树
+- Reconciler
+- Scheduler
+- Class Component
+- Hooks (Function Component)
+
 下面我们就围绕以上几点核心来分析 React 的原理。
 
-## 理解 JSX
+## 理解 JSX 和 虚拟DOM
 
 我们从以下三个问题来理解 JSX：
 
