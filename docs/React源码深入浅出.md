@@ -1,31 +1,20 @@
 # React 原理深入浅出
 
-首先问一个问题，度React源码的好处或者说我们为什么要去读源码？
-
-1. 当然是为了理解React原理，了解它的工作机制，让我们更好的使用React
-2. 学习别人的代码，学习别人的思想
-3. 为了装逼
-
-在我们使用 React 中，其主要核心部分可以分为以下几点：
+React 中，其主要核心概念有以下几点：
 
 - JSX
 - Fiber 树
-- Reconciler
-- Scheduler
 - Class Component
-- Hooks (Function Component)
+- Function Component
+- Hooks
 
-但如果直接从上面的这些概念来进行切入React原理，是相对比较枯燥的。整理一下，我们按照这个顺序来进行讲解：
+其核心流程有三大模块：
 
-- JSX 和 虚拟DOM
-- 生命周期
-- Fiber 树
-- Reconciler
-- Scheduler
-- Class Component
-- Hooks (Function Component)
+- 调度（Reconciler）
+- 协调（Scheduler）
+- 渲染（commit）
 
-下面我们就围绕以上几点核心来分析 React 的原理。
+下面我们就围绕着核心概念和流程来进行分析 React 的原理。
 
 ## 理解 JSX 和 虚拟DOM
 
