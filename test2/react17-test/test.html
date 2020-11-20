@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>React Test</title>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script crossorigin src="https://unpkg.com/react@17.0.0/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@17.0.0/umd/react-dom.production.min.js"></script>
+  <script>
+
+    const h = React.createElement;
+
+    function FuncComp(props) {
+      const [count, setCount] = React.useState(0)
+      return h(
+        "div",
+        {
+          onClick: () => {
+            setCount(count + 1)
+          }
+        },
+        count
+      )
+    }
+
+    class ClassComp extends React.Component {
+      constructor(props) {
+        super(props)
+        this.state = {
+          count: 0
+        }
+      }
+      render() {
+        return h(
+          "div",
+          {
+            onClick: () => {
+              this.setState({ count: this.state.count + 1 })
+            }
+          },
+          this.state.count
+        )
+      }
+    }
+
+    const element = h(
+      "div",
+      { id: "root" },
+      h(FuncComp, null),
+      h(
+        "h2",
+        null,
+        "函数组件-计时器"
+      ),
+      h(ClassComp, null),
+      h(
+        "h2",
+        null,
+        "Class组件-计时器"
+      )
+    );
+
+    ReactDOM.render(element, document.getElementById("root"))
+  </script>
+</body>
+
+</html>
